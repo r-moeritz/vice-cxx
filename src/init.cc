@@ -1,9 +1,36 @@
 #include "defs.hh"
+#include <cstdlib>
 
 int sq120ToSq64[BRD_SQ_NUM];
 int sq64ToSq120[64];
+
 U64 setMask[64];
 U64 clearMask[64];
+
+U64 pieceKeys[13][BRD_SQ_NUM];
+U64 sideKey;
+U64 castleKeys[16];
+
+inline U64 rand64() {
+  return
+    (U64) rand()
+    + (U64) rand() << 15
+    + (U64) rand() << 30
+    + (U64) rand() << 45
+    + ((U64) rand() & 0xf) << 60;
+}
+
+void initHashKeys() {
+  for (auto x = 0; x != 13; ++x) {
+    for (auto y = 0; y != BRD_SQ_NUM; ++y) {
+      pieceKeys[x][y] = rand64();
+    }
+  }
+  sideKey = rand64();
+  for (auto& n : castleKeys) {
+    n = rand64();
+  }
+}
 
 void initBitMasks() {
   for (auto i = 0; i != 64; ++i) {
@@ -37,4 +64,5 @@ void initSq120To64() {
 void initAll() {
   initSq120To64();
   initBitMasks();
+  initHashKeys();
 }

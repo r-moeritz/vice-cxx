@@ -4,7 +4,7 @@ import os
 ccflags = '-std=c++11 -Wall -Wextra -g'
 ldflags = '--static'
 cpppath = ['../include']
-source  = ['main.cc', 'init.cc', 'bitboards.cc']
+source  = ['main.cc', 'init.cc', 'bitboards.cc', 'hashkeys.cc']
 target = 'vice++'
 
 if platform.system() == 'Windows':

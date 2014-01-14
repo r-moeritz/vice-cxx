@@ -5,7 +5,7 @@
 #include <cstdlib> // exit
 
 // MACROS
-#ifdef _DEBUG
+#ifdef DEBUG
 #define ASSERT(n)                               \
   if (!(n)) {                                   \
     printf("FAIL: %s", #n);                     \
@@ -17,7 +17,7 @@
   }
 #else
 #define ASSERT(n)
-#endif // _DEBUG
+#endif // DEBUG
 
 // ALIASES
 typedef unsigned long long U64;
@@ -76,6 +76,9 @@ extern int sq120ToSq64[BRD_SQ_NUM];
 extern int sq64ToSq120[64];
 extern U64 setMask[64];
 extern U64 clearMask[64];
+extern U64 pieceKeys[13][BRD_SQ_NUM];
+extern U64 sideKey;
+extern U64 castleKeys[16];
 
 // INLINE FUNCTIONS
 inline int fr2sq(int f, int r) {
@@ -99,5 +102,6 @@ void initAll();
 void printBitBoard(U64);
 int  cnt(U64);
 int  pop(U64*);
+U64  generatePosKey(const Board&);
 
 #endif // DEFS_HH
