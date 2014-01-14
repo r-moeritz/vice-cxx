@@ -11,3 +11,13 @@
 *.lai
 *.la
 *.a
+
+# Compiled executables
+*.exe
+
+# SCons artifacts
+.sconsign.dblite
+
+# Emacs stuff
+TAGS
+*~
