@@ -1,10 +1,10 @@
 import platform
 import os
 
-ccflags = '-std=c++11 -Wall -Wextra -g'
+ccflags = '-std=c++11 -Wall -Wextra -g -Og'
 ldflags = '--static'
 cpppath = ['../include']
-source  = ['main.cc', 'init.cc', 'bitboards.cc', 'hashkeys.cc']
+source  = ['main.cc', 'global.cc', 'init.cc', 'bitboard.cc', 'board.cc']
 target = 'vice++'
 
 if platform.system() == 'Windows':

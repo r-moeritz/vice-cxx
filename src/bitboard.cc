@@ -1,4 +1,8 @@
 #include "defs.hh"
+#include "util.hh"
+
+U64 setMask[64];
+U64 clearMask[64];
 
 const int bitTable[64] = {
   63, 30, 3,  32, 25, 41, 22, 33, 
