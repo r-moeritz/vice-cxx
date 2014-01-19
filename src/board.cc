@@ -1,6 +1,26 @@
 #include "board.hh"
 #include "util.hh"
 
+void Board::updateMaterialLists() {
+  for (auto i = 0; i != BRD_SQ_NUM; ++i) {
+    auto piece = this->pieces[i];
+    if (piece == NO_SQ || piece == EMPTY) continue;
+    
+    auto colour = pieceCol[piece];
+    if (pieceBig[piece]) this->bigPce[colour] += 1;
+    if (pieceMin[piece]) this->minPce[colour] += 1;
+    if (pieceMaj[piece]) this->majPce[colour] += 1;
+
+    this->material[colour] += pieceVal[piece];
+    auto n = this->pceNum[piece];
+    this->pList[piece][n] = i;
+    this->pceNum[piece] += 1;
+    
+    if (piece == wK) this->kingSq[WHITE] = i;
+    if (piece == bK) this->kingSq[BLACK] = i;
+  }
+}
+
 void Board::print() const {
   puts("\nGame Board:\n");
 

@@ -14,17 +14,19 @@ struct Board {
   int hisPly;
   U64 posKey;
   int pceNum[13];
-  int bigPce[3];
-  int majPce[3];
-  int minPce[3];
+  int bigPce[2];
+  int majPce[2];
+  int minPce[2];
+  int material[2];
   int castlePerm;
   Undo history[MAXGAMEMOVES];
   int pList[13][10];
 
   void reset();
-  U64 generatePosKey() const;
+  U64  generatePosKey() const;
   void parseFEN(const char*);
   void print() const;
+  void updateMaterialLists();
 };
 
 #endif // !BOARD_HH

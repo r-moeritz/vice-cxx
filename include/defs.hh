@@ -55,4 +55,10 @@ extern const char sideChar[];
 extern const char rankChar[];
 extern const char fileChar[];
 
+extern const bool pieceBig[13];
+extern const bool pieceMaj[13];
+extern const bool pieceMin[13];
+extern const int  pieceVal[13];
+extern const int  pieceCol[13];
+
 #endif // DEFS_HH
