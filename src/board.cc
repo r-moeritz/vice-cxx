@@ -1,5 +1,90 @@
 #include "board.hh"
 #include "util.hh"
+#include "bitboard.hh"
+
+void Board::validate() const {
+  int pceNum[13]  = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+  int bigPce[2]   = { 0, 0 };
+  int majPce[2]   = { 0, 0 };
+  int minPce[2]   = { 0, 0 };
+  int material[2] = { 0, 0 };
+  U64  pawns[3]   = { 0, 0, 0 };
+  
+  for (auto i = 0; i != 3; ++i) {
+    pawns[i] = this->pawns[i];
+  }
+  
+  // Check piece list
+  // --------------------------------------------------
+  for (int piece = wP; piece <= bK; ++piece) {
+    for (auto pn = 0; pn != this->pceNum[piece]; ++pn) {
+      auto sq = this->pList[piece][pn];
+      ASSERT(this->pieces[sq] == piece);
+    }
+  }
+
+  // Check piece count and other counters
+  // --------------------------------------------------
+  for (auto sq64 = 0; sq64 != 64; ++sq64) {
+    auto sq = sq120(sq64);
+    auto piece = this->pieces[sq];
+    pceNum[piece] += 1;
+    auto colour = pieceCol[piece];
+    if (pieceBig[piece]) bigPce[colour] += 1;
+    if (pieceMin[piece]) minPce[colour] += 1;
+    if (pieceMaj[piece]) majPce[colour] += 1;
+    material[colour] += pieceVal[piece];
+  }
+
+  for (int piece = wP; piece <= bK; ++piece) {
+    ASSERT(pceNum[piece] == this->pceNum[piece]);
+  }
+
+  // Check bitboard counts
+  // --------------------------------------------------
+  auto pc = cnt(pawns[WHITE]);
+  ASSERT(pc == this->pceNum[wP]);
+  pc = cnt(pawns[BLACK]);
+  ASSERT(pc == this->pceNum[bP]);
+  pc = cnt(pawns[BOTH]);
+  ASSERT(pc == this->pceNum[bP] + this->pceNum[wP]);
+
+  // Check bitboard squares
+  // --------------------------------------------------
+  while (pawns[WHITE]) {
+    auto sq64 = pop(pawns[WHITE]);
+    ASSERT(this->pieces[sq120(sq64)] == wP);
+  }
+  while (pawns[BLACK]) {
+    auto sq64 = pop(pawns[BLACK]);
+    ASSERT(this->pieces[sq120(sq64)] == bP);
+  }
+  while (pawns[BOTH]) {
+    auto sq64 = pop(pawns[BOTH]);
+    auto sq = sq120(sq64);
+    ASSERT(this->pieces[sq] == wP || this->pieces[sq] == bP);
+  }
+
+  // Sanity checks
+  // --------------------------------------------------
+  int colours[2] = { WHITE, BLACK };
+  for (auto col : colours) {
+    ASSERT(material[col] == this->material[col]);
+    ASSERT(minPce[col]   == this->minPce[col]);
+    ASSERT(majPce[col]   == this->majPce[col]);
+    ASSERT(bigPce[col]   == this->bigPce[col]);
+  }
+
+  ASSERT(this->side == WHITE || this->side == BLACK);
+  ASSERT(this->generatePosKey() == this->posKey);
+
+  ASSERT(this->enPas == NO_SQ
+         || (ranksBrd[this->enPas] == RANK_6 && this->side == WHITE)
+         || (ranksBrd[this->enPas] == RANK_3 && this->side == BLACK));
+  
+  ASSERT(this->pieces[this->kingSq[WHITE]] == wK);
+  ASSERT(this->pieces[this->kingSq[BLACK]] == bK);
+}
 
 void Board::updateMaterialLists() {
   for (auto i = 0; i != BRD_SQ_NUM; ++i) {
@@ -15,9 +100,15 @@ void Board::updateMaterialLists() {
     auto n = this->pceNum[piece];
     this->pList[piece][n] = i;
     this->pceNum[piece] += 1;
-    
-    if (piece == wK) this->kingSq[WHITE] = i;
-    if (piece == bK) this->kingSq[BLACK] = i;
+
+    if (piece == wK || piece == bK) {
+      this->kingSq[colour] = i;
+    }
+
+    if (piece == wP || piece == bP) {
+      setbit(this->pawns[colour], sq64(i));
+      setbit(this->pawns[BOTH], sq64(i));
+    }
   }
 }
 
@@ -145,6 +236,7 @@ void Board::parseFEN(const char* fen) {
   }
 
   this->posKey = this->generatePosKey();
+  this->updateMaterialLists();
 }
 
 void Board::reset() {
@@ -158,7 +250,10 @@ void Board::reset() {
     this->bigPce[i] = 0;
     this->majPce[i] = 0;
     this->minPce[i] = 0;
-    this->pawns[i] = 0;
+    this->material[i] = 0;
+  }
+  for (auto& p : this->pawns) {
+    p = 0;
   }
   for (auto& n : this->pceNum) {
     n = 0;
@@ -193,7 +288,7 @@ U64 Board::generatePosKey() const {
     finalKey ^= pieceKeys[EMPTY][this->enPas];
   }
 
-  ASSERT(this->castlePerm >= 0 && this->castle <= 15);
+  ASSERT(this->castlePerm >= 0 && this->castlePerm <= 15);
   finalKey ^= castleKeys[this->castlePerm];
 
   return finalKey;

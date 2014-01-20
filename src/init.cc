@@ -41,8 +41,24 @@ void initBitMasks() {
   }
 }
 
+void initRankFileBrd() {
+  for (auto i = 0; i != BRD_SQ_NUM; ++i) {
+    ranksBrd[i] = NO_SQ;
+    filesBrd[i] = NO_SQ;
+  }
+
+  for (int r = RANK_1; r != RANK_NONE; ++r) {
+    for (int f = FILE_A; f != FILE_NONE; ++f) {
+      auto sq = fr2sq(f, r);
+      ranksBrd[sq] = r;
+      filesBrd[sq] = f;
+    }
+  }
+}
+
 void initAll() {
   initSq120To64();
   initBitMasks();
   initHashKeys();
+  initRankFileBrd();
 }

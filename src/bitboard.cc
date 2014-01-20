@@ -15,10 +15,10 @@ const int bitTable[64] = {
   38, 28, 58, 20, 37, 17, 36, 8
 };
 
-int pop(U64* bb) {
-  U64 b = *bb ^ (*bb - 1);
+int pop(U64& bb) {
+  U64 b = bb ^ (bb - 1);
   unsigned fold = (unsigned)((b & 0xffffffff) ^ (b >> 32));
-  *bb &= (*bb - 1);
+  bb &= (bb - 1);
   return bitTable[(fold * 0x783a9b23) >> 26];
 }
 

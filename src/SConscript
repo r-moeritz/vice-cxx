@@ -1,7 +1,7 @@
 import platform
 import os
 
-ccflags = '-std=c++11 -Wall -Wextra -g -Og'
+ccflags = '-std=c++11 -Wall -Wextra -g -Og -DDEBUG'
 ldflags = '--static'
 cpppath = ['../include']
 source  = ['main.cc', 'global.cc', 'init.cc', 'bitboard.cc', 'board.cc']

@@ -50,6 +50,9 @@ extern U64 pieceKeys[13][BRD_SQ_NUM];
 extern U64 sideKey;
 extern U64 castleKeys[16];
 
+extern int filesBrd[BRD_SQ_NUM];
+extern int ranksBrd[BRD_SQ_NUM];
+
 extern const char pceChar[];
 extern const char sideChar[];
 extern const char rankChar[];

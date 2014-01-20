@@ -7,6 +7,9 @@ U64 pieceKeys[13][BRD_SQ_NUM];
 U64 sideKey;
 U64 castleKeys[16];
 
+int filesBrd[BRD_SQ_NUM];
+int ranksBrd[BRD_SQ_NUM];
+
 const char pceChar[]  = ".PNBRQKpnbrqk";
 const char sideChar[] = "wb-";
 const char rankChar[] = "12345678";
