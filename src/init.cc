@@ -1,5 +1,7 @@
 #include "util.hh"
 
+using namespace vice;
+
 void initSq120To64() {
   for (auto& n : sq120ToSq64) {
     n = 65;
@@ -56,7 +58,7 @@ void initRankFileBrd() {
   }
 }
 
-void initAll() {
+void vice::init() {
   initSq120To64();
   initBitMasks();
   initHashKeys();

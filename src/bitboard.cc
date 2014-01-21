@@ -1,8 +1,7 @@
-#include "defs.hh"
 #include "util.hh"
+#include "bitboard.hh"
 
-U64 setMask[64];
-U64 clearMask[64];
+using namespace vice;
 
 const int bitTable[64] = {
   63, 30, 3,  32, 25, 41, 22, 33, 
@@ -15,20 +14,23 @@ const int bitTable[64] = {
   38, 28, 58, 20, 37, 17, 36, 8
 };
 
-int pop(U64& bb) {
+U64 vice::setMask[64];
+U64 vice::clearMask[64];
+
+int vice::pop(U64& bb) {
   U64 b = bb ^ (bb - 1);
   unsigned fold = (unsigned)((b & 0xffffffff) ^ (b >> 32));
   bb &= (bb - 1);
   return bitTable[(fold * 0x783a9b23) >> 26];
 }
 
-int cnt(U64 bb) {
+int vice::cnt(U64 bb) {
   int c;
   for (c = 0; bb; ++c, bb &= bb - 1);
   return c;
 }
 
-void printBitBoard(U64 bb) {
+void vice::printBitBoard(U64 bb) {
   puts("");
   for (int rank = RANK_8; rank >= RANK_1; --rank) {
     for (int file = FILE_A; file != FILE_NONE; ++file) {

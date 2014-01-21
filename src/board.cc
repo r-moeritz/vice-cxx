@@ -2,6 +2,8 @@
 #include "util.hh"
 #include "bitboard.hh"
 
+using namespace vice;
+
 void Board::validate() const {
   int pceNum[13]  = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   int bigPce[2]   = { 0, 0 };
