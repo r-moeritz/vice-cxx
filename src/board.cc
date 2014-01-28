@@ -4,6 +4,64 @@
 
 using namespace vice;
 
+bool Board::isSquareAttacked(int sq, int side) const {
+  // pawns
+  if ((side == WHITE && (this->pieces[sq-11] == wP || this->pieces[sq-9] == wP)) ||
+      (side == BLACK && (this->pieces[sq+11] == bP || this->pieces[sq+9] == bP))) {
+    return true;
+  }
+
+  // knights
+  for (auto dir : knDir) {
+    auto pce = this->pieces[sq + dir];
+    if (pieceKn[pce] && pieceCol[pce] == side) {
+      return true;
+    }
+  }
+
+  // rooks, queens
+  for (auto dir : rkDir) {
+    auto tsq = sq + dir;
+    auto pce = this->pieces[tsq];
+    while (pce != NO_SQ) {
+      if (pce != EMPTY) {
+        if (pieceRQ[pce] && pieceCol[pce] == side) {
+          return true;
+        }
+        break;
+      }
+      tsq += dir;
+      pce = this->pieces[tsq];
+    }
+  }
+ 
+  // bishops, queens
+  for (auto dir : biDir) {
+    auto tsq = sq + dir;
+    auto pce = this->pieces[tsq];
+    while (pce != NO_SQ) {
+      if (pce != EMPTY) {
+        if (pieceBQ[pce] && pieceCol[pce] == side) {
+          return true;
+        }
+        break;
+      }
+      tsq += dir;
+      pce = this->pieces[tsq];
+    }
+  }
+
+  // king
+  for (auto dir : kiDir) {
+    auto pce = this->pieces[sq + dir];
+    if (pieceKi[pce] && pieceCol[pce] == side) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void Board::validate() const {
   int pceNum[13]  = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
   int bigPce[2]   = { 0, 0 };

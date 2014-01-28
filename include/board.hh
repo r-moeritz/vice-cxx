@@ -29,6 +29,7 @@ namespace vice {
     void print() const;
     void updateMaterialLists();
     void validate() const;
+    bool isSquareAttacked(int sq, int side) const;
   };
 }
 

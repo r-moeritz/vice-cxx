@@ -73,6 +73,16 @@ namespace vice {
   extern const int  pieceVal[13];
   extern const int  pieceCol[13];
 
+  extern const bool pieceKn[13];
+  extern const bool pieceKi[13];
+  extern const bool pieceRQ[13];
+  extern const bool pieceBQ[13];
+
+  extern const int knDir[8];
+  extern const int rkDir[4];
+  extern const int biDir[4];
+  extern const int kiDir[8];
+
   // ----------------------------------------------------------------------
   // FUNCTIONS
   // ----------------------------------------------------------------------
