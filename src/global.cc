@@ -26,7 +26,7 @@ const int  vice::pieceCol[13] = { BOTH,  WHITE, WHITE, WHITE, WHITE, WHITE, WHIT
 const bool vice::pieceKn[13] = { false, false, true,  false, false, false, false, false, true,  false, false, false, false };
 const bool vice::pieceKi[13] = { false, false, false, false, false, false, true,  false, false, false, false, false, true };
 const bool vice::pieceRQ[13] = { false, false, false, false, true,  true,  false, false, false, false, true,  true,  false };
-const bool vice::pieceBQ[13] = { false, false, false, true,  false, false, false, false, false, true,  false, false, false };
+const bool vice::pieceBQ[13] = { false, false, false, true,  false, true,  false, false, false, true,  false, true,  false };
 
 const int vice::knDir[8] = { -8, -19, -21, -12, 8, 19, 21, 12 };
 const int vice::rkDir[4] = { -1, 10, 1, 10 };

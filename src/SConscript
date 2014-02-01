@@ -4,7 +4,8 @@ import os
 ccflags = '-std=c++11 -Wall -Wextra -g -Og -DDEBUG'
 ldflags = '--static'
 cpppath = ['../include']
-source  = ['main.cc', 'global.cc', 'init.cc', 'bitboard.cc', 'board.cc']
+source  = ['main.cc', 'global.cc', 'init.cc', 'bitboard.cc', 'board.cc',
+           'util.cc', 'move.cc']
 target = 'vice++'
 
 if platform.system() == 'Windows':
