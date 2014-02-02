@@ -8,9 +8,6 @@
 // ----------------------------------------------------------------------
 
 #ifdef DEBUG
-// TODO: throw exception instead of printing & exiting. boils down to same
-// thing but is more elegant since recovery may be possible & stack trace is
-// available.
 #define ASSERT(n)                                                       \
   if (!(n)) {                                                           \
     printf("\nFAIL: %s\n      on %s\n      at %s\n      in file %s\n      at line %d\n", \

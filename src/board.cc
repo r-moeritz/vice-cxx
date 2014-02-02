@@ -1,6 +1,7 @@
 #include "board.hh"
 #include "util.hh"
 #include "bitboard.hh"
+#include <stdexcept>
 
 using namespace vice;
 
@@ -203,6 +204,7 @@ void Board::print() const {
 }
 
 void Board::parseFEN(const char* fen) {
+  std::string orgFen(fen);
   int rank  = RANK_8;
   int file  = FILE_A;
   auto piece = 0;
@@ -248,7 +250,11 @@ void Board::parseFEN(const char* fen) {
       continue;
 
     default:
-      return; // TODO: throw exception with error detail.
+      auto ix = orgFen.find(fen);
+      auto msg = "\nError parsing FEN: " + orgFen + "\n" +
+        std::string(ix + 18, ' ') + "^^^ Unrecognized character in column " +
+        std::to_string(ix) + "\n";
+      throw std::runtime_error(msg);
     }
 
     for (auto i = 0; i != count; ++i) {
